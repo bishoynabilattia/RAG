@@ -18,6 +18,10 @@ load_dotenv()
 # _________________________
 from langsmith import traceable
 
+os.environ["LANGCHAIN_TRACING_V2"] = "true"
+os.environ["LANGCHAIN_ENDPOINT"] = "https://api.smith.langchain.com"
+os.environ["LANGCHAIN_API_KEY"] = os.getenv("LANGCHAIN_API_KEY") # أو ضع المفتاح مباشرة هنا كـ string مؤقتاً للتأكد
+os.environ["LANGCHAIN_PROJECT"] = "chat"
 
 class chrom:
     def __init__(self):
@@ -100,7 +104,8 @@ class master:
             return img
         else:
             return None
-    @traceable(name="basic_chaining")
+
+    @traceable(name="chat")
     def llm_send(self,message, history):
         q=self.coll.setup()
         request=self.model.google_model_embed(message)
