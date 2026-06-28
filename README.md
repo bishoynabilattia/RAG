@@ -19,11 +19,34 @@ The foundational phase establishes the core retrieval and generation mechanics.
         contents=text
     )
     return result.embeddings[0].values
-```
+  ```
+* HYBRID SEARCH TECHNIQUE: The power of BM25 and Semantic search is combined to introduce good results.
+  ```python
+     def hybridsearch(self,message, docs):
+        pure_texts = docs[0] if docs else []
+        langchain_docs = [Document(page_content=text) for text in pure_texts]
+    
+        bm_25 = BM25.from_documents(langchain_docs)
+        bm_25.k = 3 
+        vector_retriever = StaticVectorRetriever(docs=langchain_docs)
+        assambl = ensambl(
+        retrievers=[bm_25, vector_retriever],
+        weights=[0.4, 0.6]
+        )
+        final_docs = assambl.invoke(message)
+       return [doc.page_content for doc in final_docs]
+  ```  
 * LLM Generation: User queries trigger a context lookup from the vector database using ChromaDB, which is an advanced Language Model, then processed via the Groq API to generate accurate, context-aware textual answers.
-* Observability: observe the performance of system by using LangSmith.  
+* Observability: observe the performance of the system by using LangSmith.
+  ```python
+     from langsmith import traceable
+      @traceable(name="second_chaining")
+    def llm_send(self,message, history):
+        q=self.coll.setup()
+        request=self.model.google_model_embed(message)
+        embedding = request.embeddings[0].values
 
-
+  ```
 * User Interface: A clean, web-based chat interface built with Gradio to allow seamless text interactions.
   
 # 🔹 Version 2.0: Audio Output Integration (Text-to-Speech)
@@ -31,7 +54,8 @@ This phase introduces multi-modal capabilities by converting textual explanation
 
 * Arabic Voice Synthesis: Integrates edge-TTS to automatically transform the generated text response into high-quality Arabic speech.
 * ```python
-      import edge_tts as tts```
+      import edge_tts as tts
+  ```
 
 * Enhanced Accessibility: Users can now listen to historical narratives rather than just read them, making the learning experience more dynamic.
 
