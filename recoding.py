@@ -15,6 +15,8 @@ import os # used in geting keys
 import time
 from dotenv import load_dotenv # To hide my API_Keys
 load_dotenv()
+# _________________________
+from langsmith import traceable
 
 
 class chrom:
@@ -97,7 +99,7 @@ class master:
             return img
         else:
             return None
-
+    @traceable(name="second_chaining")
     def llm_send(self,message, history):
         q=self.coll.setup()
         request=self.model.google_model_embed(message)
