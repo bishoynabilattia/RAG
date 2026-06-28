@@ -91,7 +91,8 @@ class master:
         # إرجاع قائمة نصوص صافية لتتوافق مع الـ join في دالة الاستعلام لديك
         return [doc.page_content for doc in final_docs]
     
-    def img_show(self,raw_data):
+    def img_show(self,raw_data): 
+        
         image=raw_data['metadatas'][0][0]
         img=image.get('image_url')
         if img is not None:
