@@ -92,7 +92,7 @@ class master:
         return [doc.page_content for doc in final_docs]
     
     def img_show(self,raw_data): 
-        
+
         image=raw_data['metadatas'][0][0]
         img=image.get('image_url')
         if img is not None:
@@ -100,7 +100,7 @@ class master:
             return img
         else:
             return None
-    @traceable(name="second_chaining")
+    @traceable(name="basic_chaining")
     def llm_send(self,message, history):
         q=self.coll.setup()
         request=self.model.google_model_embed(message)
