@@ -6,7 +6,23 @@ An AI-powered conversational assistant designed to simplify and explain historic
 The foundational phase establishes the core retrieval and generation mechanics.
 
 * Vector Storage: Historical data is chunked, embedded, and indexed using ChromaDB for efficient similarity search.
+   ```python 
+   GEMINI_API_KEY =os.getenv("google_API")
+    cl = genai.Client(api_key=GEMINI_API_KEY)
+
+    def get_google_embedding(text):
+    result = cl.models.embed_content(
+        model="models/gemini-embedding-2",
+        config=genai.types.EmbedContentConfig(
+            output_dimensionality=768
+        ),
+        contents=text
+    )
+    return result.embeddings[0].values
+```
 * LLM Generation: User queries trigger a context lookup from the vector database using ChromaDB, which is an advanced Language Model, then processed via the Groq API to generate accurate, context-aware textual answers.
+* Observability: observe the performance of system by using LangSmith.  
+
 
 * User Interface: A clean, web-based chat interface built with Gradio to allow seamless text interactions.
   
@@ -38,7 +54,7 @@ The latest version enables a completely fluid, hands-free voice conversation pip
 
 * Vector Database: ChromaDB
 
-* Inference APIs: Groq API (LLM & Whisper-large-v3)
+* Inference APIs: Groq API (LLM & Whisper-large-v3), Google API (Embedding)
 
 * Voice Synthesis: edge-tts
 
